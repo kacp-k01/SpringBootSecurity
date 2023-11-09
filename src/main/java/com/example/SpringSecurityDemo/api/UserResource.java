@@ -7,6 +7,7 @@ import com.auth0.jwt.interfaces.DecodedJWT;
 import com.example.SpringSecurityDemo.Service.UserService;
 import com.example.SpringSecurityDemo.domain.Role;
 import com.example.SpringSecurityDemo.domain.UserMember;
+import com.example.SpringSecurityDemo.filter.CustomAuthorizationFilter;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
@@ -23,7 +24,6 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
-import static org.springframework.http.HttpStatus.FORBIDDEN;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RestController
@@ -89,12 +89,7 @@ public class UserResource {
 
 
             } catch (Exception e) {
-                response.setHeader("error", e.getMessage());
-                response.setStatus(FORBIDDEN.value());
-                Map<String, String> error = new HashMap<>();
-                error.put("error_message", e.getMessage());
-                response.setContentType(APPLICATION_JSON_VALUE);
-                new ObjectMapper().writeValue(response.getOutputStream(), error);
+                CustomAuthorizationFilter.badRequestResponse(response, e);
             }
         } else {
             throw new RuntimeException("Refresh token is missing");
@@ -102,8 +97,3 @@ public class UserResource {
     }
 }
 
-@Data
-class RoleToUserForm {
-    private String username;
-    private String rolename;
-}
