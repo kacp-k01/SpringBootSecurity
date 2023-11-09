@@ -1,17 +1,13 @@
 package com.example.SpringSecurityDemo.domain;
 
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.util.ArrayList;
 import java.util.Collection;
-
-import static javax.persistence.FetchType.EAGER;
-import static javax.persistence.GenerationType.AUTO;
-
+import static jakarta.persistence.FetchType.EAGER;
+import static jakarta.persistence.GenerationType.AUTO;
 
 @Entity
 @Data
@@ -19,7 +15,8 @@ import static javax.persistence.GenerationType.AUTO;
 @AllArgsConstructor
 public class UserMember {
 
-    @Id @GeneratedValue(strategy = AUTO)
+    @Id
+    @GeneratedValue(strategy = AUTO)
     private Long id;
     private String name;
     private String username;
