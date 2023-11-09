@@ -14,12 +14,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.lang.reflect.Member;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-
-
 
 @Service
 @RequiredArgsConstructor
@@ -28,29 +25,22 @@ import java.util.List;
 public class UserServiceImpl implements UserService, UserDetailsService {
     private final UserRepo userRepo;
     private final RoleRepo roleRepo;
-
     private final PasswordEncoder passwordEncoder;
-
-
-
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         UserMember userMember = userRepo.findByUsername(username);
-        if(userMember == null){
+        if (userMember == null) {
             log.error("User not found in the database");
             throw new UsernameNotFoundException("User not found in the database");
         } else {
-            log.info("User found in the database: {}",username);
+            log.info("User found in the database: {}", username);
 
         }
         Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
-        userMember.getRoles().forEach(role -> {
-            authorities.add(new SimpleGrantedAuthority(role.getName()));
-        });
-        return new org.springframework.security.core.userdetails.User(userMember.getUsername(),userMember.getPassword(),authorities);
+        userMember.getRoles().forEach(role -> authorities.add(new SimpleGrantedAuthority(role.getName())));
+        return new org.springframework.security.core.userdetails.User(userMember.getUsername(), userMember.getPassword(), authorities);
     }
-
 
     @Override
     public UserMember saveUserMember(UserMember userMember) {
@@ -67,8 +57,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Override
     public void addRoleToUser(String username, String roleName) {
-
-        log.info("Adding role {} to userMember {}",roleName,username);
+        log.info("Adding role {} to userMember {}", roleName, username);
         UserMember userMember = userRepo.findByUsername(username);
         Role role = roleRepo.findByName(roleName);
         userMember.getRoles().add(role);
@@ -76,7 +65,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Override
     public UserMember getUserMember(String username) {
-        log.info("Fetching user {}",username);
+        log.info("Fetching user {}", username);
         return userRepo.findByUsername(username);
     }
 
@@ -85,6 +74,5 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         log.info("Fetching all users");
         return userRepo.findAll();
     }
-
 }
 
