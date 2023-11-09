@@ -18,6 +18,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import static com.example.SpringSecurityDemo.security.SecurityConfig.passwordEncoder;
+
 @Service
 @RequiredArgsConstructor
 @Transactional
@@ -25,7 +27,6 @@ import java.util.List;
 public class UserServiceImpl implements UserService, UserDetailsService {
     private final UserRepo userRepo;
     private final RoleRepo roleRepo;
-    private final PasswordEncoder passwordEncoder;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -45,7 +46,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Override
     public UserMember saveUserMember(UserMember userMember) {
         log.info("Saving new userMember {} to the database", userMember.getName());
-        userMember.setPassword(passwordEncoder.encode(userMember.getPassword()));
+        userMember.setPassword(passwordEncoder().encode(userMember.getPassword()));
         return userRepo.save(userMember);
     }
 
