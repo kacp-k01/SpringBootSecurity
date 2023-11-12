@@ -15,12 +15,12 @@ public enum Role {
 
     USER(Collections.emptySet()),
     ADMIN(
-            Set.of(
-                    ADMIN_READ,
-                    ADMIN_UPDATE,
-                    ADMIN_DELETE,
-                    ADMIN_CREATE
-            )
+        Set.of(
+            ADMIN_READ,
+            ADMIN_UPDATE,
+            ADMIN_DELETE,
+            ADMIN_CREATE
+        )
     );
 
     private final Set<Permission> permissions;
