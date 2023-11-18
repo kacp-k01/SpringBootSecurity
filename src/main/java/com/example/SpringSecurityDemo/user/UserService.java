@@ -28,7 +28,6 @@ public class UserService {
         if (!request.getNewPassword().equals(user.getPassword())) {
             throw new IllegalStateException("New Password cannot be the same as old password");
         }
-
         user.setPassword(passwordEncoder.encode(request.getNewPassword()));
         repository.save(user);
     }
